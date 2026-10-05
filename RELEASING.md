@@ -1,7 +1,7 @@
 # Release guide
 
 This repository publishes binaries, checksums, a GitHub prerelease, and a multi-arch
-GHCR image when a version tag is pushed. For `v0.1.0-alpha.1`, use the following flow.
+GHCR image when a version tag is pushed. For `v0.1.0-alpha.2`, use the following flow.
 
 ## 1. Preflight
 
@@ -10,11 +10,11 @@ Run from the repository root:
 ```bash
 cargo fmt --all -- --check
 cargo build --locked --release
-./target/release/mcp-sandboxscan --version
+./target/release/sandscope --version
 ./examples/minimal.sh | jq '.summary'
 ```
 
-The version must be `0.1.0-alpha.1`, and the example must report one flow. Review
+The version must be `0.1.0-alpha.2`, and the example must report one flow. Review
 `CHANGELOG.md`, `RELEASE_NOTES.md`, `THREAT_MODEL.md`, `BENCHMARK.md`, and the JSON
 schema before tagging. The broader ecosystem benchmark is separate because it needs
 Go, Python, Node.js, Javy, network access, and local socket permissions.
@@ -28,7 +28,7 @@ git status --short
 git diff --check
 git diff
 git add .
-git commit -m "release: v0.1.0-alpha.1"
+git commit -m "release: v0.1.0-alpha.2"
 git push origin main
 ```
 
@@ -40,8 +40,8 @@ The tag must exactly match `v` plus the Cargo package version; the workflow enfo
 this relationship.
 
 ```bash
-git tag -a v0.1.0-alpha.1 -m "MCP-SandboxScan v0.1.0-alpha.1"
-git push origin v0.1.0-alpha.1
+git tag -a v0.1.0-alpha.2 -m "SandScope v0.1.0-alpha.2"
+git push origin v0.1.0-alpha.2
 ```
 
 The `Release` workflow then:
@@ -64,13 +64,13 @@ intended audience to pull it.
 ## 4. Verify published assets
 
 ```bash
-gh release view v0.1.0-alpha.1
-gh release download v0.1.0-alpha.1 --dir /tmp/mcp-sandboxscan-release
-cd /tmp/mcp-sandboxscan-release
+gh release view v0.1.0-alpha.2
+gh release download v0.1.0-alpha.2 --dir /tmp/sandscope-release
+cd /tmp/sandscope-release
 sha256sum --check SHA256SUMS
 
-docker pull ghcr.io/wapiti08/mcp-sandboxscan:v0.1.0-alpha.1
-docker run --rm ghcr.io/wapiti08/mcp-sandboxscan:v0.1.0-alpha.1 --version
+docker pull ghcr.io/wapiti08/sandscope:v0.1.0-alpha.2
+docker run --rm ghcr.io/wapiti08/sandscope:v0.1.0-alpha.2 --version
 ```
 
 On macOS, use `shasum -a 256 -c SHA256SUMS` if GNU `sha256sum` is unavailable.

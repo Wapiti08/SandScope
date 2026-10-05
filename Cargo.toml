@@ -1,8 +1,8 @@
 [workspace]
-members = ["mcp-sandboxscan"]
+members = ["sandscope"]
 exclude = [
-    "mcp-sandboxscan/external/*",
-    "mcp-sandboxscan/fixtures/*",
+    "sandscope/external/*",
+    "sandscope/fixtures/*",
 ]
 resolver = "3"
 

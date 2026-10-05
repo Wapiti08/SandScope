@@ -1,12 +1,12 @@
-# MCP-SandboxScan
+# SandScope
 
 This work has been accepted at **Conference on Software Supply Chain Offensive Research and Ecosystem Defenses (SCORED '26)**. Please check the paper at [SandScope: A Behavioral Audit Layer for MCP Tools in LLM Agent Supply Chains](https://arxiv.org/pdf/2601.01241).
 
 A dynamic security analysis framework for MCP tools and servers, combining WASM/WASI sandboxed execution, native MCP protocol monitoring, and source-to-sink data-flow detection.
 
-MCP-SandboxScan executes or interacts with MCP implementations, collects runtime and protocol evidence, and detects potentially unsafe flows from external inputs—including environment variables, files, and network responses—to LLM-visible outputs.
+SandScope executes or interacts with MCP implementations, collects runtime and protocol evidence, and detects potentially unsafe flows from external inputs—including environment variables, files, and network responses—to LLM-visible outputs.
 
-> `v0.1.0-alpha.1` is an early preview. Its CLI and JSON contracts may change, and
+> `v0.1.0-alpha.2` is an early preview. Its CLI and JSON contracts may change, and
 > native MCP subjects require additional OS- or VM-level isolation. Read the
 > [threat model](THREAT_MODEL.md) before analyzing untrusted code.
 
@@ -16,7 +16,7 @@ Build the scanner from the repository root (Rust `1.93` or newer):
 
 ```bash
 cargo build --locked --release
-./target/release/mcp-sandboxscan --version
+./target/release/sandscope --version
 ./examples/minimal.sh > report.json
 jq '.summary' report.json
 ```
@@ -29,13 +29,13 @@ secret values and captured protocol payloads; handle them as sensitive artifacts
 ### Release binaries
 
 Download the archive for your platform from
-[GitHub Releases](https://github.com/Wapiti08/MCP-SandboxScan/releases/tag/v0.1.0-alpha.1),
+[GitHub Releases](https://github.com/Wapiti08/sandscope/releases/tag/v0.1.0-alpha.2),
 then verify it against the attached `SHA256SUMS` file. Archives are published for
 Linux x86_64, macOS x86_64/arm64, and Windows x86_64. Each archive also contains the
 versioned schema, documentation, and a self-contained minimal WASM example:
 
 ```bash
-./mcp-sandboxscan --version
+./sandscope --version
 ./examples/minimal.sh | jq '.summary'
 ```
 
@@ -44,11 +44,11 @@ versioned schema, documentation, and a self-contained minimal WASM example:
 The release workflow publishes Linux amd64/arm64 images to GHCR:
 
 ```bash
-docker pull ghcr.io/wapiti08/mcp-sandboxscan:v0.1.0-alpha.1
+docker pull ghcr.io/wapiti08/sandscope:v0.1.0-alpha.2
 
 docker run --rm \
-  -v "$PWD/mcp-sandboxscan/fixtures/tool_return_secret_tool:/work:ro" \
-  ghcr.io/wapiti08/mcp-sandboxscan:v0.1.0-alpha.1 \
+  -v "$PWD/sandscope/fixtures/tool_return_secret_tool:/work:ro" \
+  ghcr.io/wapiti08/sandscope:v0.1.0-alpha.2 \
   --wasm /work/tool.wasm \
   --env DEMO_SECRET=EXAMPLE_ONLY_0123456789abcdef
 ```
@@ -159,7 +159,7 @@ go version   # >= 1.21 for wasip1; >= 1.23 for go-sdk MCP fixtures
 WASI builds default to `GOOS=wasip1 GOARCH=wasm go build -o tool.wasm .`. TinyGo is optional:
 
 ```bash
-cd mcp-sandboxscan
+cd sandscope
 ./scripts/check-tinygo.sh
 ```
 
@@ -174,9 +174,9 @@ rm -rf /tmp/venv-check
 WASI subjects need a CPython `python.wasm` runtime (fetched once):
 
 ```bash
-cd mcp-sandboxscan
+cd sandscope
 ./scripts/fetch-cpython-wasi.sh
-# or: export MCP_SANDBOXSCAN_PYTHON_WASM=/path/to/python.wasm
+# or: export SANDSCOPE_PYTHON_WASM=/path/to/python.wasm
 ```
 
 PyPI MCP subjects run `pip install` into per-fixture `.venv` on first build; no global `pip install` required.
@@ -193,7 +193,7 @@ npm --version
 Upstream typescript-sdk examples (optional):
 
 ```bash
-cd mcp-sandboxscan
+cd sandscope
 ./scripts/fetch-typescript-sdk-examples.sh
 ```
 
@@ -209,7 +209,7 @@ javy --version   # e.g. javy-v3.x
 Or use the repo check script:
 
 ```bash
-cd mcp-sandboxscan
+cd sandscope
 ./scripts/check-javy.sh
 ```
 
@@ -238,7 +238,7 @@ Notes:
 
 ### External assets (fetched on demand)
 
-These are not global installs; scripts clone or download into `mcp-sandboxscan/external/` when you run upstream case studies or tests:
+These are not global installs; scripts clone or download into `sandscope/external/` when you run upstream case studies or tests:
 
 | Script | Purpose |
 |--------|---------|
@@ -295,8 +295,8 @@ cargo test xxx
 ## Run
 ```bash
 # From the repository root
-cargo run --locked --release --bin mcp-sandboxscan -- \
-  --wasm mcp-sandboxscan/fixtures/tool_return_secret_tool/tool.wasm \
+cargo run --locked --release --bin sandscope -- \
+  --wasm sandscope/fixtures/tool_return_secret_tool/tool.wasm \
   --env DEMO_SECRET=EXAMPLE_ONLY_0123456789abcdef
 ```
 
@@ -306,7 +306,7 @@ Use the **`corpus`** binary to evaluate **real-world MCP server repositories** f
 
 | Workflow | Input | Ground truth | Metrics |
 |----------|-------|--------------|---------|
-| `mcp-sandboxscan --subject` | Single `subject.toml` | Manual | Per-subject `ScanReport` |
+| `sandscope --subject` | Single `subject.toml` | Manual | Per-subject `ScanReport` |
 | `bench --suite full` | `case_studies/` | Oracle labels | Precision / recall / F1 |
 | **`corpus scan`** | GitHub repos | **None** | Support rate, suspicious rate |
 
@@ -333,7 +333,7 @@ Per-ecosystem toolchains are needed only for repos of that language (same as [De
 ### Quick start (offline smoke test)
 
 ```bash
-cd mcp-sandboxscan
+cd sandscope
 
 # 1. Seed a tiny offline corpus (no network)
 cargo run --bin corpus -- collect --seed --out corpus/repos.json
@@ -355,7 +355,7 @@ Replace `<run-id>` with the directory printed by `corpus scan`, or read `reports
 ### Full pipeline (GitHub collection)
 
 ```bash
-cd mcp-sandboxscan
+cd sandscope
 
 # Collect MCP-related repos (curl + GitHub API, ~30 per search query)
 # Applies a blocklist filter (awesome lists, SDKs, docs) — see src/corpus/filter.rs
@@ -474,7 +474,7 @@ For production-quality scanning of a **known** server, prefer writing a dedicate
 For paper-grade precision/recall on synthetic threats, use **`bench`** instead of `corpus`:
 
 ```bash
-cd mcp-sandboxscan
+cd sandscope
 cargo run --bin bench -- --suite full --out-dir reports/bench-full
 # suites: full | wasi-core | small-ts
 ```
@@ -486,13 +486,13 @@ See `reports/<run-id>/summary.md` for TP/FN/FP/TN and per-ecosystem support tabl
 The current real MCP smoke test uses `rust-mcp-filesystem` under:
 
 ```text
-mcp-sandboxscan/external/rust-mcp-filesystem
+sandscope/external/rust-mcp-filesystem
 ```
 
 If the external server is not present yet:
 
 ```bash
-cd mcp-sandboxscan
+cd sandscope
 mkdir -p external
 git clone https://github.com/rust-mcp-stack/rust-mcp-filesystem external/rust-mcp-filesystem
 ```
@@ -500,14 +500,14 @@ git clone https://github.com/rust-mcp-stack/rust-mcp-filesystem external/rust-mc
 Build the real Rust MCP server:
 
 ```bash
-cd mcp-sandboxscan/external/rust-mcp-filesystem
+cd sandscope/external/rust-mcp-filesystem
 cargo build --release
 ```
 
 Run the real MCP stdio smoke test and print the JSON report:
 
 ```bash
-cd mcp-sandboxscan
+cd sandscope
 cargo test --lib mcp::native_stdio::tests::native_stdio_driver_calls_real_rust_mcp_filesystem -- --nocapture
 ```
 
@@ -559,14 +559,14 @@ Go support uses the same capability-driven pipeline as Python and Rust:
 Build a Go WASI subject:
 
 ```bash
-cd mcp-sandboxscan
-cargo run --bin mcp-sandboxscan -- --subject case_studies/go-env-leak/subject.toml --env DEMO_SECRET=SEKRET_0123456789abcdef
+cd sandscope
+cargo run --bin sandscope -- --subject case_studies/go-env-leak/subject.toml --env DEMO_SECRET=SEKRET_0123456789abcdef
 ```
 
 Run Go native MCP integration tests:
 
 ```bash
-cd mcp-sandboxscan
+cd sandscope
 cargo test --lib mcp::native_stdio::tests::go:: -- --nocapture
 cargo test --lib scans_go_mcp_ -- --nocapture
 ```
@@ -574,16 +574,16 @@ cargo test --lib scans_go_mcp_ -- --nocapture
 Upstream go-sdk hello example (fetched once into `external/go-sdk/`):
 
 ```bash
-cd mcp-sandboxscan
+cd sandscope
 ./scripts/fetch-go-sdk-examples.sh
-cargo run --bin mcp-sandboxscan -- \
+cargo run --bin sandscope -- \
   --subject case_studies/go-mcp-upstream-hello/subject.toml
 ```
 
 Run upstream go-sdk tests:
 
 ```bash
-cd mcp-sandboxscan
+cd sandscope
 cargo test --lib driver_calls_upstream_go_sdk_hello -- --nocapture
 cargo test --lib scans_go_mcp_upstream_hello_subject -- --nocapture
 ```
@@ -608,27 +608,27 @@ Python support mirrors Rust and Go with two execution paths:
 WASI subjects need a `python.wasm` interpreter. Fetch the default build:
 
 ```bash
-cd mcp-sandboxscan
+cd sandscope
 ./scripts/fetch-cpython-wasi.sh
 ```
 
 Or point to an existing runtime:
 
 ```bash
-export MCP_SANDBOXSCAN_PYTHON_WASM=/path/to/python.wasm
+export SANDSCOPE_PYTHON_WASM=/path/to/python.wasm
 ```
 
 Run a Python WASI subject:
 
 ```bash
-cd mcp-sandboxscan
-cargo run --bin mcp-sandboxscan -- \
+cd sandscope
+cargo run --bin sandscope -- \
   --subject case_studies/python-env-leak/subject.toml \
   --env DEMO_SECRET=SEKRET_0123456789abcdef
 
 # file-exfil needs a mounted data directory
 mkdir -p data && echo "top-secret" > data/secret.txt
-cargo run --bin mcp-sandboxscan -- \
+cargo run --bin sandscope -- \
   --subject case_studies/python-file-exfil/subject.toml \
   --data-dir ./data
 ```
@@ -636,7 +636,7 @@ cargo run --bin mcp-sandboxscan -- \
 Rust vs Python portability matrix (6 subjects):
 
 ```bash
-cd mcp-sandboxscan
+cd sandscope
 chmod +x demo/run_rust_python_matrix.sh
 DATA_DIR="$(pwd)/data" ./demo/run_rust_python_matrix.sh
 ```
@@ -656,31 +656,31 @@ PyPI-based subjects install dependencies into `fixtures/<name>/.venv` or `extern
 Run a PyPI MCP subject (build step runs `pip install` automatically):
 
 ```bash
-cd mcp-sandboxscan
-cargo run --bin mcp-sandboxscan -- \
+cd sandscope
+cargo run --bin sandscope -- \
   --subject case_studies/python-fastmcp-echo/subject.toml
 
-cargo run --bin mcp-sandboxscan -- \
+cargo run --bin sandscope -- \
   --subject case_studies/python-fastmcp-env-leak/subject.toml \
   --env DEMO_SECRET=SEKRET_0123456789abcdef
 
-cargo run --bin mcp-sandboxscan -- \
+cargo run --bin sandscope -- \
   --subject case_studies/python-mcp-server-fetch/subject.toml
 ```
 
 Upstream FastMCP examples (fetched once into `external/fastmcp/examples/`):
 
 ```bash
-cd mcp-sandboxscan
+cd sandscope
 ./scripts/fetch-fastmcp-examples.sh
-cargo run --bin mcp-sandboxscan -- \
+cargo run --bin sandscope -- \
   --subject case_studies/python-fastmcp-upstream-echo/subject.toml
 ```
 
 Run Python / PyPI integration tests:
 
 ```bash
-cd mcp-sandboxscan
+cd sandscope
 cargo test --lib mcp::native_stdio::tests::python:: -- --nocapture
 cargo test --lib pipeline::tests::scans_python_mcp_server_fetch_subject -- --nocapture
 cargo test --lib pipeline::tests::scans_python_fastmcp_echo_subject -- --nocapture

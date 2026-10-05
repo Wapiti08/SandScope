@@ -2,10 +2,10 @@
 
 The release includes a labeled smoke benchmark to make detection claims reproducible
 and appropriately scoped. The checked-in result is
-[`mcp-sandboxscan/reports/bench-smoke-test/summary.md`](https://github.com/Wapiti08/MCP-SandboxScan/blob/v0.1.0-alpha.1/mcp-sandboxscan/reports/bench-smoke-test/summary.md).
+[`sandscope/reports/bench-smoke-test/summary.md`](https://github.com/Wapiti08/sandscope/blob/v0.1.0-alpha.2/sandscope/reports/bench-smoke-test/summary.md).
 Release archives also include the Markdown and JSON summaries under `benchmark/`.
 
-## v0.1.0-alpha.1 smoke result
+## v0.1.0-alpha.2 smoke result
 
 | Suite | Cases | Scan success | TP / FP / TN / FN | Precision | Recall | F1 |
 |---|---:|---:|---:|---:|---:|---:|
@@ -30,14 +30,14 @@ use `num_flows`, checked against the per-case `flows` arrays.
 | Original | 33 | 0 / 0 | 12 / 60 | +12 / +60 |
 | Supplementary | 27 | 0 / 0 | 10 / 48 | +10 / +48 |
 
-Original sources: [shallow](mcp-sandboxscan/reports/corpus-run-1781854580/corpus_summary.json)
-and [targeted](mcp-sandboxscan/reports/corpus-targeted-scan-ok-1781854580-v2/corpus_summary.json).
+Original sources: [shallow](sandscope/reports/corpus-run-1781854580/corpus_summary.json)
+and [targeted](sandscope/reports/corpus-targeted-scan-ok-1781854580-v2/corpus_summary.json).
 Shallow succeeded on 35 repositories and targeted on 33. The paired comparison
 excludes `21st-dev/magic-mcp` and `executeautomation/mcp-playwright`, which failed
 in targeted mode.
 
-Supplementary sources: [shallow](mcp-sandboxscan/reports/budget-shallow-final/corpus_summary.json)
-and [targeted](mcp-sandboxscan/reports/budget-targeted-final/corpus_summary.json).
+Supplementary sources: [shallow](sandscope/reports/budget-shallow-final/corpus_summary.json)
+and [targeted](sandscope/reports/budget-targeted-final/corpus_summary.json).
 Success counts were 28/35 and 27/35 respectively. The successful sets differ only
 by `21st-dev/magic-mcp`, which is excluded from the paired comparison.
 
@@ -64,7 +64,7 @@ Install Javy and the Rust toolchain, then run from the repository root:
 ```bash
 cargo run --locked --release --bin bench -- \
   --suite small-ts \
-  --out-dir mcp-sandboxscan/reports/bench-v0.1.0-alpha.1
+  --out-dir sandscope/reports/bench-v0.1.0-alpha.2
 ```
 
 The output directory contains `summary.json`, `summary.md`, and optional per-case
@@ -75,7 +75,7 @@ For the larger but environment-dependent matrix:
 ```bash
 cargo run --locked --release --bin bench -- \
   --suite full \
-  --out-dir mcp-sandboxscan/reports/bench-full-v0.1.0-alpha.1
+  --out-dir sandscope/reports/bench-full-v0.1.0-alpha.2
 ```
 
 The full suite additionally needs Go, Python, Node.js/npm, CPython WASI assets, and any

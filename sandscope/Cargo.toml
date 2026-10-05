@@ -1,0 +1,40 @@
+[package]
+name = "sandscope"
+version = "0.1.0-alpha.2"
+edition = "2024"
+rust-version = "1.93"
+description = "Dynamic security analysis for MCP tools and servers"
+license = "MIT"
+repository = "https://github.com/Wapiti08/sandscope"
+readme = "../README.md"
+default-run = "sandscope"
+
+[[bin]]
+name = "bench"
+path = "src/bin/bench.rs"
+
+[[bin]]
+name = "mcp_compare"
+path = "src/bin/mcp_compare.rs"
+
+[[bin]]
+name = "evasion"
+path = "src/bin/evasion.rs"
+
+[[bin]]
+name = "corpus"
+path = "src/bin/corpus.rs"
+
+[dependencies]
+base64 = "0.23"
+anyhow = "1"
+clap = { version = "4", features = ["derive"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+walkdir = "2"
+
+wasmtime = "45.0.0"
+wasmtime-wasi = "45.0.0"
+wasi-common = "45.0.0"
+cap-std = "4.0.0"
+toml = "1.1.2"

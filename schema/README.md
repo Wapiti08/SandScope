@@ -1,7 +1,7 @@
 # JSON telemetry schema
 
 `telemetry.schema.json` is a JSON Schema Draft 2020-12 contract for the complete
-`ScanReport` emitted on standard output by `mcp-sandboxscan v0.1.0-alpha.1`.
+`ScanReport` emitted on standard output by `sandscope v0.1.0-alpha.2`.
 It covers execution evidence, optional MCP transcripts, monitor events, taint sources,
 LLM-visible sinks, detected flows, and the summary.
 

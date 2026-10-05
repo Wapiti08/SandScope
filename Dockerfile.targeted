@@ -28,8 +28,8 @@ RUN ln -sf /usr/local/lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm \
 WORKDIR /build
 
 COPY Cargo.toml Cargo.lock ./
-COPY mcp-sandboxscan/Cargo.toml mcp-sandboxscan/Cargo.toml
-COPY mcp-sandboxscan/src mcp-sandboxscan/src
+COPY sandscope/Cargo.toml sandscope/Cargo.toml
+COPY sandscope/src sandscope/src
 
 RUN cargo build --locked --release --bin target_egress --bin corpus \
     && cp target/release/target_egress /usr/local/bin/targeted-egress \

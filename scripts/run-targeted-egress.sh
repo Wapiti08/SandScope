@@ -3,8 +3,8 @@ set -euo pipefail
 
 IMAGE="sandscope-targeted-egress"
 SUBJECT_VOLUME="sandscope-targeted-subjects"
-RESULT_DIR="$PWD/mcp-sandboxscan/reports/declared-only-targeted"
-PLAN="/workspace/mcp-sandboxscan/experiments/declared_only_plan.json"
+RESULT_DIR="$PWD/sandscope/reports/declared-only-targeted"
+PLAN="/workspace/sandscope/experiments/declared_only_plan.json"
 
 if command -v docker >/dev/null 2>&1; then
   DOCKER=(docker)

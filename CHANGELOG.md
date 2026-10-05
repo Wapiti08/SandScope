@@ -1,10 +1,19 @@
 # Changelog
 
-All notable changes to MCP-SandboxScan are documented here. This project follows
+All notable changes to SandScope are documented here. This project follows
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html); alpha releases may still
 change CLI and JSON output contracts before `v1.0.0`.
 
 ## [Unreleased]
+
+## [0.1.0-alpha.2] - 2026-10-05
+
+### Changed
+
+- Renamed the Cargo package, CLI, MCP client identity, source directory, and release artifacts to `sandscope`.
+- Publish container images at `ghcr.io/wapiti08/sandscope`.
+- Configuration overrides now use `SANDSCOPE_BIN` and `SANDSCOPE_PYTHON_WASM`.
+- Includes dependency updates and the fixture logging security fix from main.
 
 ## [0.1.0-alpha.1] - 2026-08-23
 
@@ -25,5 +34,6 @@ change CLI and JSON output contracts before `v1.0.0`.
 - Native MCP subjects are monitored but do not receive WASI-level host isolation.
 - Full ecosystem benchmarks require their respective language runtimes and tools.
 
-[Unreleased]: https://github.com/Wapiti08/MCP-SandboxScan/compare/v0.1.0-alpha.1...HEAD
-[0.1.0-alpha.1]: https://github.com/Wapiti08/MCP-SandboxScan/releases/tag/v0.1.0-alpha.1
+[Unreleased]: https://github.com/Wapiti08/sandscope/compare/v0.1.0-alpha.2...HEAD
+[0.1.0-alpha.2]: https://github.com/Wapiti08/sandscope/compare/v0.1.0-alpha.1...v0.1.0-alpha.2
+[0.1.0-alpha.1]: https://github.com/Wapiti08/sandscope/releases/tag/v0.1.0-alpha.1

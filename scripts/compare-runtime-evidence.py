@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 
 
-REPORTS = Path(__file__).resolve().parents[1] / "mcp-sandboxscan" / "reports"
+REPORTS = Path(__file__).resolve().parents[1] / "sandscope" / "reports"
 PAIRS = (
     ("Original", "corpus-run-1781854580", "corpus-targeted-scan-ok-1781854580-v2"),
     ("Supplementary", "budget-shallow-final", "budget-targeted-final"),

@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/Wapiti08/MCP-SandboxScan/blob/v0.1.0-alpha.1/schema/telemetry.schema.json",
-  "title": "MCP-SandboxScan telemetry report",
-  "description": "Schema for the ScanReport JSON emitted by mcp-sandboxscan v0.1.0-alpha.1.",
+  "$id": "https://github.com/Wapiti08/sandscope/blob/v0.1.0-alpha.2/schema/telemetry.schema.json",
+  "title": "SandScope telemetry report",
+  "description": "Schema for the ScanReport JSON emitted by sandscope v0.1.0-alpha.2.",
   "type": "object",
   "additionalProperties": false,
   "required": ["exec", "events", "sources", "sinks", "flows", "summary"],

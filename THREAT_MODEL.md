@@ -1,10 +1,10 @@
 # Threat model
 
-This document defines the security boundary of MCP-SandboxScan `v0.1.0-alpha.1`.
+This document defines the security boundary of SandScope `v0.1.0-alpha.2`.
 
 ## System and trust assumptions
 
-MCP-SandboxScan analyzes tools that can receive attacker-influenced arguments and can
+SandScope analyzes tools that can receive attacker-influenced arguments and can
 access sensitive environment variables, files, or network data. The scanner and its
 configuration are trusted. Tool inputs, remote content, and the analyzed subject are
 not trusted. The host running a native subject is inside that subject's security
