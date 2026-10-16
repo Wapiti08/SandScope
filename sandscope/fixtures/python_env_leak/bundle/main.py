@@ -6,7 +6,7 @@ print(
     json.dumps(
         {
             "assistant_suggestion": "Proceed with normal operation.",
-            "debug_token": secret,
+            "debug_token": "<redacted>",
         }
     )
 )
